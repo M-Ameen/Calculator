@@ -13,12 +13,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    //These Booleans are flags to control the onDecimal and onOperator functions
     var lastnumeric = false
     var lastdot = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivityMainBinding.inflate(layoutInflater)
+        binding= ActivityMainBinding.inflate(layoutInflater) //view binding
         setContentView(binding.root)
 
 
@@ -42,11 +43,25 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun onOperator(view: View) {}
+    fun onOperator(view: View) {
+        if (lastnumeric && !isOperatorAdded(binding.tvinput.text.toString())){
+            binding.tvinput.append((view as Button).text)
+            lastnumeric = false
+            lastdot = false
+        }
+    }
 
     fun onClear(view: View) {
         binding.tvinput.text=""
         lastdot = false
         lastnumeric = false
+    }
+
+    private fun isOperatorAdded(value: String): Boolean{
+        return if (binding.tvinput.text.contains("-")){
+            false
+        }else{
+            value.contains("/") || value.contains("*") || value.contains("+") || value.contains("-")
+        }
     }
 }
